@@ -29,12 +29,14 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<div className="mx-auto p-4 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-6xl">
-					<div className="sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-6xl mx-auto p-4">
-						<Navbar />
+				<Navbar />
+				<div className="pt-16">
+					{" "}
+					{/* Add padding top to account for fixed navbar */}
+					<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 						{children}
-						<Footer />
-					</div>
+					</main>
+					<Footer />
 				</div>
 			</body>
 		</html>
