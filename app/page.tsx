@@ -1,10 +1,16 @@
 import Image from "next/image";
+import ProductList from "./components/ProductList";
 export default function Home() {
 	return (
-		<div className="h-screen">
-			<div className="w-full mb-12 aspect-[16/9] relative">
-				<Image src="/hero.jpg" alt="" fill />
+		<div className="">
+			<div className="w-full max-h-[500px] mb-12 aspect-video relative">
+				<Image
+					src="/hero.jpg"
+					alt=""
+					fill
+				/>
 			</div>
+			<ProductList />
 		</div>
 	);
 }
