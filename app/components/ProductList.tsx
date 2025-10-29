@@ -10,12 +10,12 @@ const products: ProductsType = [
 		description:
 			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
 		sizes: ["S", "M", "L", "XL"],
-		colors: ["Red", "Blue", "Green"],
-		price: 29.99,
+		colors: ["red", "blue", "green"],
+		price: 29.39,
 		images: {
 			red: "/products/product1.jpg",
-			blue: "/products/product1-2.jpg",
-			green: "/products/product1-3.jpg",
+			blue: "/products/product2.jpg",
+			green: "/products/product3.jpg",
 		},
 	},
 	{
@@ -29,8 +29,38 @@ const products: ProductsType = [
 		price: 29.99,
 		images: {
 			red: "/products/product1.jpg",
-			blue: "/products/product1-2.jpg",
-			green: "/products/product1-3.jpg",
+			blue: "/products/product2.jpg",
+			green: "/products/product3.jpg",
+		},
+	},
+	{
+		id: 3,
+		name: "Product 3",
+		shortDescription: "This is a short description of Product 1.",
+		description:
+			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
+		sizes: ["S", "M", "L", "XL"],
+		colors: ["red", "blue", "green"],
+		price: 39.99,
+		images: {
+			red: "/products/product1.jpg",
+			blue: "/products/product2.jpg",
+			green: "/products/product3.jpg",
+		},
+	},
+	{
+		id: 4,
+		name: "Product 4",
+		shortDescription: "This is a short description of Product 1.",
+		description:
+			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
+		sizes: ["S", "M", "L", "XL"],
+		colors: ["red", "blue", "green"],
+		price: 49.99,
+		images: {
+			red: "/products/product1.jpg",
+			blue: "/products/product2.jpg",
+			green: "/products/product3.jpg",
 		},
 	},
 ];
@@ -39,7 +69,7 @@ const ProductList = () => {
 	return (
 		<div className="w-full">
 			<Categories />
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-12">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
 				{products.map((product) => (
 					<ProductCard
 						key={product.id}

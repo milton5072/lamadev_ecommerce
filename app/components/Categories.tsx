@@ -37,7 +37,7 @@ const Categories = () => {
 							py-3 px-4 rounded-lg transition-all duration-200 
 							${
 								selectedCategory === category.slug
-									? "bg-purple-600 text-white shadow-md"
+									? "bg-purple-500 text-white shadow-md"
 									: "bg-white text-gray-600 hover:bg-purple-50 hover:text-purple-600"
 							}
 							font-medium text-sm focus:outline-none 
