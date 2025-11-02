@@ -1,6 +1,12 @@
 import Image from "next/image";
 import ProductList from "./components/ProductList";
-export default function Home() {
+
+const HomePage = async ({
+	searchParams,
+}: {
+	searchParams: Promise<{ category: string }>;
+}) => {
+	const category = (await searchParams).category;
 	return (
 		<div className="">
 			<div className="w-full max-h-[500px] mb-12 aspect-video relative">
@@ -10,7 +16,11 @@ export default function Home() {
 					fill
 				/>
 			</div>
-			<ProductList />
+			<ProductList
+				category={category}
+				params="homepage"
+			/>
 		</div>
 	);
-}
+};
+export default HomePage;
