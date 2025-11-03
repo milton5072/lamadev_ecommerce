@@ -3,6 +3,16 @@ import { CartItemsType } from "@/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import ShippingForm from "../components/ShippingForm";
+import { useState } from "react";
+
+interface ShippingFormData {
+	name: string;
+	email: string;
+	phone: string;
+	address: string;
+	city: string;
+}
+
 const steps = [
 	{ id: 1, title: "Shopping Cart" },
 	{ id: 2, title: "Shipping Information" },
@@ -70,8 +80,15 @@ const CartPage = () => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const activeStep = parseInt(searchParams.get("steps") || "1");
+	const [shippingForm, setShippingForm] = useState<ShippingFormData | null>(
+		null
+	);
 
 	const handleNextStep = () => {
+		if (activeStep === 2 && !shippingForm) {
+			alert("Please fill in shipping information");
+			return;
+		}
 		if (activeStep < 3) {
 			router.push(`/cart?steps=${activeStep + 1}`);
 		}
@@ -154,7 +171,7 @@ const CartPage = () => {
 					) : activeStep === 2 ? (
 						<div>
 							<h2 className="text-xl font-medium mb-4">Shipping Information</h2>
-							<ShippingForm />
+							<ShippingForm setShippingForm={setShippingForm} />
 						</div>
 					) : activeStep === 3 ? (
 						<div>
@@ -195,7 +212,11 @@ const CartPage = () => {
 						onClick={handleNextStep}
 						className="w-full bg-purple-600 text-white py-3 rounded-md mt-6 hover:bg-purple-700"
 					>
-						Proceed to Checkout
+						{activeStep === 1
+							? "Proceed to Shipping"
+							: activeStep === 2
+							? "Continue to Payment"
+							: "Place Order"}
 					</button>
 				</div>
 			</div>
