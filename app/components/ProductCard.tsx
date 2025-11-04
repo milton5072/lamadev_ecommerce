@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { ProductType } from "@/types";
+import useCartStore from "@/stores/cartStore";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
 	const [productTypes, setProductTypes] = useState({
@@ -23,6 +24,28 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 		}));
 	};
 
+	const { cart, addToCart } = useCartStore();
+
+	const handleAddToCart = () => {
+		const newProduct = {
+			...product,
+			quantity: 1,
+			selectedSize: productTypes.size,
+			selectedColor: productTypes.color,
+		};
+
+		// Check if product already exists in cart
+		const existingProduct = cart.find(
+			(item) =>
+				item.id === product.id &&
+				item.selectedSize === productTypes.size &&
+				item.selectedColor === productTypes.color
+		);
+
+		if (!existingProduct) {
+			addToCart(newProduct);
+		}
+	};
 	return (
 		<div className="shadow-lg rounded-md overflow-hidden">
 			<Link href={`/products/${product.id}`}>
@@ -51,10 +74,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 							}
 						>
 							{product.sizes.map((size) => (
-								<option
-									key={size}
-									value={size}
-								>
+								<option key={size} value={size}>
 									{size}
 								</option>
 							))}
@@ -88,7 +108,10 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 				{/* price and add to cart */}
 				<div className="flex items-center justify-between">
 					<p className="font-medium">${product.price.toFixed(2)}</p>
-					<button className="bg-purple-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-purple-700 transition-colors duration-300">
+					<button
+						className="bg-purple-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-purple-700 transition-colors duration-300"
+						onClick={handleAddToCart}
+					>
 						Add to Cart
 					</button>
 				</div>
