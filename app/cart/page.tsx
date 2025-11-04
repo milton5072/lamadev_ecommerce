@@ -3,6 +3,7 @@ import { CartItemsType } from "@/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import ShippingForm from "../components/ShippingForm";
+import PaymentForm from "../components/PaymentForm";
 import { useState } from "react";
 
 interface ShippingFormData {
@@ -79,20 +80,12 @@ const cartItems: CartItemsType = [
 const CartPage = () => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
-	const activeStep = parseInt(searchParams.get("steps") || "1");
+
+	const activeStep = parseInt(searchParams.get("step") || "1");
+
 	const [shippingForm, setShippingForm] = useState<ShippingFormData | null>(
 		null
 	);
-
-	const handleNextStep = () => {
-		if (activeStep === 2 && !shippingForm) {
-			alert("Please fill in shipping information");
-			return;
-		}
-		if (activeStep < 3) {
-			router.push(`/cart?steps=${activeStep + 1}`);
-		}
-	};
 
 	return (
 		<div className="flex flex-col gap-8 items-center justify-center my-12">
@@ -100,10 +93,7 @@ const CartPage = () => {
 			{/* steps */}
 			<div className="flex flex-col md:flex-row md:items-center gap-8">
 				{steps.map((step) => (
-					<div
-						key={step.id}
-						className="flex items-center gap-2"
-					>
+					<div key={step.id} className="flex items-center gap-2">
 						<div
 							className={`w-8 h-8 rounded-full flex items-center justify-center ${
 								step.id === activeStep
@@ -173,12 +163,16 @@ const CartPage = () => {
 							<h2 className="text-xl font-medium mb-4">Shipping Information</h2>
 							<ShippingForm setShippingForm={setShippingForm} />
 						</div>
-					) : activeStep === 3 ? (
+					) : activeStep === 3 && shippingForm ? (
 						<div>
 							<h2 className="text-xl font-medium mb-4">Payment Details</h2>
-							<p>Step 3 content will go here</p>
+							<PaymentForm />
 						</div>
-					) : null}
+					) : (
+						<p className="text-sm text-gray-500">
+							Please fill in the shipping form to continue.
+						</p>
+					)}
 				</div>
 
 				{/* Summary */}
@@ -194,9 +188,13 @@ const CartPage = () => {
 									.toFixed(2)}
 							</span>
 						</div>
-						<div className="flex justify-between">
-							<span>Shipping</span>
-							<span>$0.00</span>
+						<div className="flex justify-between text-sm">
+							<p className="text-gray-500">Discount(10%)</p>
+							<p className="font-medium">$ 10</p>
+						</div>
+						<div className="flex justify-between text-sm">
+							<p className="text-gray-500">Shipping Fee</p>
+							<p className="font-medium">$10</p>
 						</div>
 						<div className="flex justify-between font-medium mt-4 pt-4 border-t">
 							<span>Total</span>
@@ -208,16 +206,14 @@ const CartPage = () => {
 							</span>
 						</div>
 					</div>
-					<button
-						onClick={handleNextStep}
-						className="w-full bg-purple-600 text-white py-3 rounded-md mt-6 hover:bg-purple-700"
-					>
-						{activeStep === 1
-							? "Proceed to Shipping"
-							: activeStep === 2
-							? "Continue to Payment"
-							: "Place Order"}
-					</button>
+					{activeStep === 1 && (
+						<button
+							onClick={() => router.push("/cart?step=2", { scroll: false })}
+							className="w-full bg-purple-600 text-white py-3 rounded-md mt-6 hover:bg-purple-700 transition-colors"
+						>
+							Continue to Shipping
+						</button>
+					)}
 				</div>
 			</div>
 		</div>

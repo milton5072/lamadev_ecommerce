@@ -19,7 +19,7 @@ const ShippingForm = ({
 
 	const handleShippingForm: SubmitHandler<ShippingFormInputs> = (data) => {
 		setShippingForm(data);
-		router.push("/cart?steps=3", { scroll: false });
+		router.push("/cart?step=3", { scroll: false });
 	};
 	return (
 		<form
@@ -27,10 +27,7 @@ const ShippingForm = ({
 			onSubmit={handleSubmit(handleShippingForm)}
 		>
 			<div className="flex flex-col gap-1">
-				<label
-					htmlFor="name"
-					className="font-medium text-xs text-gray-500"
-				>
+				<label htmlFor="name" className="font-medium text-xs text-gray-500">
 					Name
 				</label>
 				<input
@@ -45,10 +42,7 @@ const ShippingForm = ({
 				)}
 			</div>
 			<div className="flex flex-col gap-1">
-				<label
-					htmlFor="email"
-					className="font-medium text-xs text-gray-500"
-				>
+				<label htmlFor="email" className="font-medium text-xs text-gray-500">
 					email
 				</label>
 				<input
@@ -63,10 +57,7 @@ const ShippingForm = ({
 				)}
 			</div>
 			<div className="flex flex-col gap-1">
-				<label
-					htmlFor="phone"
-					className="font-medium text-xs text-gray-500"
-				>
+				<label htmlFor="phone" className="font-medium text-xs text-gray-500">
 					Phone
 				</label>
 				<input
@@ -81,17 +72,14 @@ const ShippingForm = ({
 				)}
 			</div>
 			<div className="flex flex-col gap-1">
-				<label
-					htmlFor="address"
-					className="font-medium text-xs text-gray-500"
-				>
+				<label htmlFor="address" className="font-medium text-xs text-gray-500">
 					Address
 				</label>
 				<input
 					type="text"
 					id="address"
 					{...register("address")}
-					placeholder="Kaburhat, Jagati, Kushtia"
+					placeholder="Jackson Heights, New York"
 					className="ring ring-gray-300 rounded px-2 py-1 focus:outline-none"
 				/>
 				{errors.address && (
@@ -99,10 +87,7 @@ const ShippingForm = ({
 				)}
 			</div>
 			<div className="flex flex-col gap-1">
-				<label
-					htmlFor="city"
-					className="font-medium text-xs text-gray-500"
-				>
+				<label htmlFor="city" className="font-medium text-xs text-gray-500">
 					City
 				</label>
 				<input
