@@ -8,7 +8,14 @@ const useCartStore = create<cartStoreStateType & cartStoreActionsType>()(
 			set((state) => ({ cart: [...state.cart, product] })),
 		removeFromCart: (product) =>
 			set((state) => ({
-				cart: state.cart.filter((item) => item.id !== product.id),
+				cart: state.cart.filter(
+					(item) =>
+						!(
+							item.id === product.id &&
+							item.selectedSize === product.selectedSize &&
+							item.selectedColor === product.selectedColor
+						)
+				),
 			})),
 		clearCart: () => set({ cart: [] }),
 	})

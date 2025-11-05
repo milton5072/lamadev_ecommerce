@@ -1,10 +1,11 @@
 "use client";
-import { CartItemsType } from "@/types";
+import { CartItemsType, ShippingFormInputs } from "@/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import ShippingForm from "../components/ShippingForm";
 import PaymentForm from "../components/PaymentForm";
 import { useState } from "react";
+import useCartStore from "@/stores/cartStore";
 
 interface ShippingFormData {
 	name: string;
@@ -20,62 +21,62 @@ const steps = [
 	{ id: 3, title: "Payment Details" },
 ];
 
-const cartItems: CartItemsType = [
-	{
-		id: 1,
-		name: "Product 1",
-		shortDescription: "This is a short description of Product 1.",
-		description:
-			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
-		sizes: ["S", "M", "L", "XL"],
-		colors: ["red", "blue", "green"],
-		price: 29.39,
-		images: {
-			red: "/products/product1.jpg",
-			blue: "/products/product2.jpg",
-			green: "/products/product3.jpg",
-		},
-		quantity: 1,
-		selectedSize: "M",
-		selectedColor: "red",
-	},
-	{
-		id: 2,
-		name: "Product 2",
-		shortDescription: "This is a short description of Product 1.",
-		description:
-			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
-		sizes: ["S", "M", "L", "XL"],
-		colors: ["red", "blue", "green"],
-		price: 29.99,
-		images: {
-			red: "/products/product1.jpg",
-			blue: "/products/product2.jpg",
-			green: "/products/product3.jpg",
-		},
-		quantity: 1,
-		selectedSize: "L",
-		selectedColor: "blue",
-	},
-	{
-		id: 3,
-		name: "Product 3",
-		shortDescription: "This is a short description of Product 1.",
-		description:
-			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
-		sizes: ["S", "M", "L", "XL"],
-		colors: ["red", "blue", "green"],
-		price: 39.99,
-		images: {
-			red: "/products/product1.jpg",
-			blue: "/products/product2.jpg",
-			green: "/products/product3.jpg",
-		},
-		quantity: 1,
-		selectedSize: "S",
-		selectedColor: "green",
-	},
-];
+// const cartItems: CartItemsType = [
+// 	{
+// 		id: 1,
+// 		name: "Product 1",
+// 		shortDescription: "This is a short description of Product 1.",
+// 		description:
+// 			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
+// 		sizes: ["S", "M", "L", "XL"],
+// 		colors: ["red", "blue", "green"],
+// 		price: 29.39,
+// 		images: {
+// 			red: "/products/product1.jpg",
+// 			blue: "/products/product2.jpg",
+// 			green: "/products/product3.jpg",
+// 		},
+// 		quantity: 1,
+// 		selectedSize: "M",
+// 		selectedColor: "red",
+// 	},
+// 	{
+// 		id: 2,
+// 		name: "Product 2",
+// 		shortDescription: "This is a short description of Product 1.",
+// 		description:
+// 			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
+// 		sizes: ["S", "M", "L", "XL"],
+// 		colors: ["red", "blue", "green"],
+// 		price: 29.99,
+// 		images: {
+// 			red: "/products/product1.jpg",
+// 			blue: "/products/product2.jpg",
+// 			green: "/products/product3.jpg",
+// 		},
+// 		quantity: 1,
+// 		selectedSize: "L",
+// 		selectedColor: "blue",
+// 	},
+// 	{
+// 		id: 3,
+// 		name: "Product 3",
+// 		shortDescription: "This is a short description of Product 1.",
+// 		description:
+// 			" This is a detailed description of Product 1. It has many features and benefits that you will find useful.",
+// 		sizes: ["S", "M", "L", "XL"],
+// 		colors: ["red", "blue", "green"],
+// 		price: 39.99,
+// 		images: {
+// 			red: "/products/product1.jpg",
+// 			blue: "/products/product2.jpg",
+// 			green: "/products/product3.jpg",
+// 		},
+// 		quantity: 1,
+// 		selectedSize: "S",
+// 		selectedColor: "green",
+// 	},
+// ];
 
 const CartPage = () => {
 	const searchParams = useSearchParams();
@@ -83,9 +84,8 @@ const CartPage = () => {
 
 	const activeStep = parseInt(searchParams.get("step") || "1");
 
-	const [shippingForm, setShippingForm] = useState<ShippingFormData | null>(
-		null
-	);
+	const [shippingForm, setShippingForm] = useState<ShippingFormInputs>();
+	const { cart, removeFromCart } = useCartStore();
 
 	return (
 		<div className="flex flex-col gap-8 items-center justify-center my-12">
@@ -93,7 +93,10 @@ const CartPage = () => {
 			{/* steps */}
 			<div className="flex flex-col md:flex-row md:items-center gap-8">
 				{steps.map((step) => (
-					<div key={step.id} className="flex items-center gap-2">
+					<div
+						key={step.id}
+						className="flex items-center gap-2"
+					>
 						<div
 							className={`w-8 h-8 rounded-full flex items-center justify-center ${
 								step.id === activeStep
@@ -119,7 +122,7 @@ const CartPage = () => {
 				<div className="w-full lg:w-7/12 shadow-lg border border-gray-100 p-8 rounded-lg flex flex-col gap-8">
 					{activeStep === 1 ? (
 						<div className="flex flex-col gap-4">
-							{cartItems.map((item) => (
+							{cart.map((item) => (
 								<div
 									key={item.id}
 									className="flex gap-4 items-center border-b border-gray-100 pb-4"
@@ -149,7 +152,7 @@ const CartPage = () => {
 									<div>
 										{/* DELETE BUTTON */}
 										<button
-											// onClick={() => removeFromCart(item)}
+											onClick={() => removeFromCart(item)}
 											className="w-8 h-8 rounded-full bg-red-100 hover:bg-red-200 transition-all duration-300 text-red-400 flex items-center justify-center cursor-pointer"
 										>
 											<p>Delete</p>
@@ -183,7 +186,7 @@ const CartPage = () => {
 							<span>Subtotal</span>
 							<span>
 								$
-								{cartItems
+								{cart
 									.reduce((acc, item) => acc + item.price * item.quantity, 0)
 									.toFixed(2)}
 							</span>
@@ -200,7 +203,7 @@ const CartPage = () => {
 							<span>Total</span>
 							<span>
 								$
-								{cartItems
+								{cart
 									.reduce((acc, item) => acc + item.price * item.quantity, 0)
 									.toFixed(2)}
 							</span>
