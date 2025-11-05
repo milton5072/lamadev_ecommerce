@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ProductType } from "@/types";
 import useCartStore from "@/stores/cartStore";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
 	const [productTypes, setProductTypes] = useState({
@@ -33,7 +34,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 			selectedSize: productTypes.size,
 			selectedColor: productTypes.color,
 		};
-
+		toast.success("Product added successfully to the cart");
 		// Check if product already exists in cart
 		const existingProduct = cart.find(
 			(item) =>
@@ -74,7 +75,10 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 							}
 						>
 							{product.sizes.map((size) => (
-								<option key={size} value={size}>
+								<option
+									key={size}
+									value={size}
+								>
 									{size}
 								</option>
 							))}
